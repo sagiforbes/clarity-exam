@@ -42,22 +42,6 @@ module "vpc" {
   }
 }
 
-data "aws_route_table" "public_route_tables" {
-  for_each = toset(module.vpc.public_subnets)
-  subnet_id = each.value
-}
-
-locals {
-  public_route_table_ids = [for rt in data.aws_route_table.public_route_tables : rt.id]
-}
-
-
-data "aws_route_table" "private_route_tables" {
-  for_each = toset(module.vpc.private_subnets)
-  subnet_id = each.value
-}
-
-
 resource "aws_security_group" "allow_http_https" {
   vpc_id = module.vpc.vpc_id
 
